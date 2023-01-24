@@ -39,7 +39,7 @@ const StyledPokeCard = ({ pokeName, url }) => {
             <PokeImg />
             Name: {pokeName}
             <br />
-            Type: {"Loading..."}
+            URL: {url}
         </StyledDiv>
     )
 }

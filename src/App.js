@@ -21,7 +21,7 @@ function App() {
         return (
           <StyledPokeCard
             key={index}
-            pokeName={item.name}
+            url={item.url}
           />
         )
       })
