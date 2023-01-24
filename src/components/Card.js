@@ -14,9 +14,14 @@ const StyledDiv = styled.div`
     box-shadow: 0px 0px 10px #ededed;
     text-align: center;
     margin-bottom: 10px;
+    display: flex;
+    &:hover {
+        background-color: #e0fce0;
+    }
 `
 const PokeImg = styled.div`
     background-image: url(${(props) => (props.url)});
+    background-color: white;
     background-position: center;
     background-size: contain;
     width: 96px;
@@ -24,6 +29,9 @@ const PokeImg = styled.div`
     box-shadow: 0px 0px 10px #ededed;
 `
 
+const PokeStats = styled.div`
+    margin: auto;
+`
 
 const StyledPokeCard = ({ name, url }) => {
 
@@ -39,9 +47,11 @@ const StyledPokeCard = ({ name, url }) => {
     return (
         <StyledDiv>
             <PokeImg url={pokeInfo && pokeInfo.sprites.front_default}/>
+            <PokeStats>
             Name: {name}
             <br />
-            Type: {"Unknown"}
+            Type: {pokeInfo && pokeInfo.types[0].type.name}
+            </PokeStats>
         </StyledDiv>
     )
 }
