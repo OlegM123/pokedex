@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
     margin-bottom: 10px;
 `
 const PokeImg = styled.div`
-    background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png');
+    background-image: url(${(props) => (props.url)});
     background-position: center;
     background-size: contain;
     width: 96px;
@@ -25,23 +25,27 @@ const PokeImg = styled.div`
 `
 
 
-const StyledPokeCard = ({ pokeName, url }) => {
+const StyledPokeCard = ({ name, url }) => {
 
     const dispacth = useDispatch();
-    const isLoading = !!useSelector(state => state.response)
-
+    
     useEffect(() => {
-    !isLoading && dispacth(getPokeData(url))
-    },[isLoading])
+    dispacth(getPokeData(url))
+    
+    },[])
 
+    const pokeInfo = useSelector(state => state.pokeData.filter(item => item.name === name))[0];
+    
     return (
         <StyledDiv>
-            <PokeImg />
-            Name: {pokeName}
+            <PokeImg url={pokeInfo && pokeInfo.sprites.front_default}/>
+            Name: {name}
             <br />
-            URL: {url}
+            Type: {"Unknown"}
         </StyledDiv>
     )
 }
+
+
 
 export default StyledPokeCard;
