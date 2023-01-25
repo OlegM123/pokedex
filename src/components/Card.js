@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getPokeData } from "../redux-store/actions";
+import placeholder from '../img/pokemon-pikachu.gif';
+import loader from '../img/loader.gif';
 
 const StyledDiv = styled.div`
     font-size: 15px;
@@ -20,7 +22,7 @@ const StyledDiv = styled.div`
     }
 `
 const PokeImg = styled.div`
-    background-image: url(${(props) => (props.url)});
+    background-image: url(${props => props.url === null ? placeholder : props.url || loader});
     background-color: white;
     background-position: center;
     background-size: contain;
@@ -36,21 +38,20 @@ const PokeStats = styled.div`
 const StyledPokeCard = ({ name, url }) => {
 
     const dispacth = useDispatch();
-    
+
     useEffect(() => {
-    dispacth(getPokeData(url))
-    
-    },[])
+        setTimeout(dispacth(getPokeData(url)) ,10000);        
+    }, [])
 
     const pokeInfo = useSelector(state => state.pokeData.filter(item => item.name === name))[0];
-    
+    const tags = pokeInfo ? pokeInfo.types.map(item => {return item.type.name}).join(' ') : "Loading..."
     return (
         <StyledDiv>
-            <PokeImg url={pokeInfo && pokeInfo.sprites.front_default}/>
+            <PokeImg url={pokeInfo && pokeInfo.sprites.front_default} />
             <PokeStats>
-            Name: {name}
-            <br />
-            Type: {pokeInfo && pokeInfo.types[0].type.name}
+                Name: {name ? (name[0].toUpperCase() + name.slice(1)) : "Loading..."}
+                <br />
+                Type: {tags}
             </PokeStats>
         </StyledDiv>
     )

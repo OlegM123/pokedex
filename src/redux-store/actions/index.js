@@ -51,3 +51,49 @@ const addPokeData = (payload) => {
         payload
     }
 }
+
+export const getPokeTypes = () => {
+    return dispatch => {
+        dispatch(loadingStarted())
+        fetch('https://pokeapi.co/api/v2/type')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            dispatch(addPokeTypes(data));
+            dispatch(loadingEnded());
+        })
+    }
+}
+
+const addPokeTypes = (payload) => {
+    return {
+        type: 'GET_POKE_TYPES',
+        payload
+    }
+}
+
+export const getPokesByTag = (name, isActive) => {
+    return dispatch => {
+        dispatch(loadingStarted());
+        fetch(`https://pokeapi.co/api/v2/type/${name}`)
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            dispatch(addDataToStore(data));
+        })
+        .then(() => {
+            dispatch(tagSelection(name, isActive));
+            dispatch(loadingEnded());
+        })
+    }
+}
+
+const tagSelection = (name, isActive) => {
+    return {
+        type: 'TAG_SELECTION',
+        name: name,
+        isActive: isActive,
+    }
+}
