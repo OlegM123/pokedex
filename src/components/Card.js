@@ -42,11 +42,11 @@ const StyledPokeCard = ({ name, url }) => {
     const dispacth = useDispatch();
 
     useEffect(() => {
-       dispacth(getPokeData(url));        
+        dispacth(getPokeData(url));
     }, [])
 
     const pokeInfo = useSelector(state => state.pokeData.filter(item => item.name === name))[0];
-    const tags = pokeInfo && pokeInfo.types.map(item => {return item.type.name}).join(' ')
+    const tags = pokeInfo && pokeInfo.types.map(item => { return item.type.name }).join(' ')
     return (
         <StyledDiv>
             <PokeImg url={pokeInfo && pokeInfo.sprites.front_default} />

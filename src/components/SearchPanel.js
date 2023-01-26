@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getData, getPokesByTag, tagSelection, handleSearch } from "../redux-store/actions";
-import { FcSearch } from 'react-icons/fc'
+import { FcSearch } from 'react-icons/fc';
+import pokedex from "../img/pokedex logo.png";
 
 
 const StyledDiv = styled.div`
@@ -26,6 +27,7 @@ const SearchButton = styled.button`
     cursor: pointer;
     border-radius: 50%;
     border-style: solid;
+    margin-left: 10px;
 `
 
 const Wrapper = styled.div`
@@ -50,6 +52,18 @@ const TagContainer = styled.div`
     align-items: center;
 `
 
+const StyledSelect = styled.select`
+    margin-left: 5px;
+`
+
+const PokedexLogo = styled.div`
+    background-image: url('${pokedex}');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 70px;
+`
+
 const SearchPanel = () => {
 
     const pokeCount = useSelector(state => state.response.count) || 0;
@@ -70,24 +84,27 @@ const SearchPanel = () => {
     return (
         <Wrapper>
             <StyledDiv>
-                <a>There is a {pokeCount} pokemons!</a>
-                <input type={"text"}
-                    placeholder="search! but it takes some time"
-                    onChange={(e) => setSearchText(e.target.value)}
-                />
-                <SearchButton onClick={() => { searchText.length && dispatch(handleSearch(searchText)) }}>
-                    <FcSearch />
-                </SearchButton>
+                <PokedexLogo />
+                <div>
+                    <input type={"text"}
+                        placeholder="search! but it takes some time"
+                        onChange={(e) => setSearchText(e.target.value)}
+                    />
+                    <SearchButton onClick={() => { searchText.length && dispatch(handleSearch(searchText)) }}>
+                        <FcSearch />
+                    </SearchButton>
+                </div>
+
             </StyledDiv>
             <PaginationSelector>
                 pokes on the page
-                <select onChange={(e) => {
+                <StyledSelect onChange={(e) => {
                     setCount(e.target.value)
                 }}>
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
-                </select>
+                </StyledSelect>
             </PaginationSelector>
             <Border />
             <TagContainer>
@@ -99,7 +116,8 @@ const SearchPanel = () => {
                             fcolor={item.fcolor}
                             onClick={() => dispatch(tagSelection(item.type))}
                             name={item.type}
-                            activeTags={activeTags}                        >
+                            activeTags={activeTags}
+                        >
                             {item.type}
                         </Tag>
                     )
