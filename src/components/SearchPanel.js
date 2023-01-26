@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getData, getPokesByTag, tagSelection } from "../redux-store/actions";
+import { getData, getPokesByTag, tagSelection, handleSearch } from "../redux-store/actions";
+import { FcSearch } from 'react-icons/fc'
+
 
 const StyledDiv = styled.div`
 height: 25px;
@@ -18,6 +20,14 @@ const Border = styled.div`
 border-bottom: 2px solid #e0e0e0;
 width: 100%;
 `
+const SearchButton = styled.button`
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    border-style: solid;
+`
+
 const Wrapper = styled.div`
 position: fixed;
 background-color: white;
@@ -45,7 +55,7 @@ const SearchPanel = () => {
     const pokeCount = useSelector(state => state.response.count) || 0;
     const pokeTypes = useSelector(state => state.pokeTypes);
     const activeTags = useSelector(state => state.activeTags);
-
+    const [searchText, setSearchText] = useState('');
     const dispatch = useDispatch();
     const [count, setCount] = useState("10");
 
@@ -61,7 +71,13 @@ const SearchPanel = () => {
         <Wrapper>
             <StyledDiv>
                 <a>There is a {pokeCount} pokemons!</a>
-                <input type={"text"}></input>
+                <input type={"text"}
+                    placeholder="search! but it takes some time"
+                    onChange={(e) => setSearchText(e.target.value)}
+                />
+                <SearchButton onClick={() => { searchText.length && dispatch(handleSearch(searchText)) }}>
+                    <FcSearch />
+                </SearchButton>
             </StyledDiv>
             <PaginationSelector>
                 pokes on the page

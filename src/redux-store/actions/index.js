@@ -34,12 +34,12 @@ export const loadingEnded = () => {
 export const getPokeData = (url) => {
     return dispacth => {
         fetch(url)
-        .then(response => {
-            return response.json();
-        })
-        .then(pokeData => {
-            dispacth(addPokeData(pokeData));
-        })
+            .then(response => {
+                return response.json();
+            })
+            .then(pokeData => {
+                dispacth(addPokeData(pokeData));
+            })
     }
 }
 
@@ -54,13 +54,13 @@ export const getPokeTypes = () => {
     return dispatch => {
         dispatch(loadingStarted())
         fetch('https://pokeapi.co/api/v2/type')
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            dispatch(addPokeTypes(data));
-            dispatch(loadingEnded());
-        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                dispatch(addPokeTypes(data));
+                dispatch(loadingEnded());
+            })
     }
 }
 
@@ -71,19 +71,38 @@ const addPokeTypes = (payload) => {
     }
 }
 
+export const handleSearch = (text) => {
+    return dispatch => {
+        dispatch(clearResults());        
+        fetch('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1500')
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {        
+                dispatch(addDataToStore(data.results.filter(item => item.name.includes(text))));
+            })
+    }
+}
+
+const clearResults = () => {
+    return {
+        type: 'CLEAR_STORE',
+    }
+}
+
 export const getPokesByTag = (name, count) => {
     return dispatch => {
         dispatch(loadingStarted());
         fetch(!!name ? `https://pokeapi.co/api/v2/type/${name}` : `https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${count}`)
-        .then(response => {
-            return response.json()
-        })
-        .then(data => {
-            dispatch(addDataToStore(data.pokemon));
-        })
-        .then(() => {
-            dispatch(loadingEnded());
-        })
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                dispatch(addDataToStore(data.pokemon));
+            })
+            .then(() => {
+                dispatch(loadingEnded());
+            })
     }
 }
 
