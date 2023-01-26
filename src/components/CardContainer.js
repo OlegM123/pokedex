@@ -8,7 +8,6 @@ const StyledDiv = styled.div`
     grid-template-columns: repeat(2, 1fr);
     max-width: 700px;
     margin: 0 auto;
-    padding-top: 154px;
     background-color: white;
 `
 

@@ -29,6 +29,7 @@ const PokeImg = styled.div`
     width: 96px;
     height: 96px;
     box-shadow: 0px 0px 10px #ededed;
+    background-repeat: no-repeat;
 `
 
 const PokeStats = styled.div`

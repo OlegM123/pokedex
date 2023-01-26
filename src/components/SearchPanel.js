@@ -22,10 +22,11 @@ const Wrapper = styled.div`
 position: fixed;
 background-color: white;
 width: 100vw;
+top: 0;
 `
 const Tag = styled.div`
     background-color: ${props => props.bgcolor};
-    color: ${props => props.isActive && 'white' || props.fcolor};
+    color: ${props => props.isActive ? 'white' : props.fcolor};
     border: 2px ${props => props.isActive ? 'dashed' : 'solid'} ${props => props.fcolor};
     width: fit-content;
     padding: 2px 5px;
@@ -41,7 +42,7 @@ const TagContainer = styled.div`
 
 const SearchPanel = () => {
 
-    const pokeCount = useSelector(state => state.response.count)||  0;
+    const pokeCount = useSelector(state => state.response.count || state.response.count)|| 0;
     const pokeTypes = useSelector(state => state.pokeTypes);
     const dispatch = useDispatch();
     const [count, setCount] = useState("10");
