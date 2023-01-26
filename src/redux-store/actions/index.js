@@ -1,5 +1,3 @@
-import { LOADING_START } from "../types";
-
 export const getData = (count) => {
     return dispatch => {
         dispatch(loadingStarted())
@@ -8,7 +6,7 @@ export const getData = (count) => {
                 return response.json();
             })
             .then(data => {
-                dispatch(addDataToStore(data));
+                dispatch(addDataToStore(data.results));
                 dispatch(loadingEnded());
             });
     }
@@ -27,7 +25,7 @@ const loadingStarted = () => {
     }
 }
 
-const loadingEnded = () => {
+export const loadingEnded = () => {
     return {
         type: 'LOADING_END',
     }
@@ -48,7 +46,7 @@ export const getPokeData = (url) => {
 const addPokeData = (payload) => {
     return {
         type: 'GET_POKE_DATA',
-        payload
+        payload: payload,
     }
 }
 
@@ -73,27 +71,25 @@ const addPokeTypes = (payload) => {
     }
 }
 
-export const getPokesByTag = (name, isActive) => {
+export const getPokesByTag = (name, count) => {
     return dispatch => {
         dispatch(loadingStarted());
-        fetch(`https://pokeapi.co/api/v2/type/${name}`)
+        fetch(!!name ? `https://pokeapi.co/api/v2/type/${name}` : `https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${count}`)
         .then(response => {
             return response.json()
         })
         .then(data => {
-            dispatch(addDataToStore(data));
+            dispatch(addDataToStore(data.pokemon));
         })
         .then(() => {
-            dispatch(tagSelection(name, isActive));
             dispatch(loadingEnded());
         })
     }
 }
 
-const tagSelection = (name, isActive) => {
+export const tagSelection = (name) => {
     return {
         type: 'TAG_SELECTION',
         name: name,
-        isActive: isActive,
     }
 }

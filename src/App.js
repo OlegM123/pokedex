@@ -17,7 +17,7 @@ const NoWayEmptyPage = styled.div`
 
 function App() {
 
-  const pokeList = useSelector(state => state.response.results || state.response.pokemon) || [];
+  const pokeList = useSelector(state => state.response || state.response.pokemon) || [];
   return (
     <div className="App">
       <SearchPanel />

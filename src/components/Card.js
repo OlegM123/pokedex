@@ -17,6 +17,7 @@ const StyledDiv = styled.div`
     text-align: center;
     margin-bottom: 10px;
     display: flex;
+    cursor: pointer;
     &:hover {
         background-color: #e0fce0;
     }
@@ -41,18 +42,18 @@ const StyledPokeCard = ({ name, url }) => {
     const dispacth = useDispatch();
 
     useEffect(() => {
-        setTimeout(dispacth(getPokeData(url)) ,10000);        
+       dispacth(getPokeData(url));        
     }, [])
 
     const pokeInfo = useSelector(state => state.pokeData.filter(item => item.name === name))[0];
-    const tags = pokeInfo ? pokeInfo.types.map(item => {return item.type.name}).join(' ') : "Loading..."
+    const tags = pokeInfo && pokeInfo.types.map(item => {return item.type.name}).join(' ')
     return (
         <StyledDiv>
             <PokeImg url={pokeInfo && pokeInfo.sprites.front_default} />
             <PokeStats>
-                Name: {name ? (name[0].toUpperCase() + name.slice(1)) : "Loading..."}
+                Name: {(name[0].toUpperCase() + name.slice(1))}
                 <br />
-                Type: {tags}
+                Type: {tags || 'Loading...'}
             </PokeStats>
         </StyledDiv>
     )

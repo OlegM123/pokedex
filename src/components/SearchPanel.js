@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getData, getPokesByTag } from "../redux-store/actions";
+import { getData, getPokesByTag, tagSelection } from "../redux-store/actions";
 
 const StyledDiv = styled.div`
 height: 25px;
@@ -26,8 +26,8 @@ top: 0;
 `
 const Tag = styled.div`
     background-color: ${props => props.bgcolor};
-    color: ${props => props.isActive ? 'white' : props.fcolor};
-    border: 2px ${props => props.isActive ? 'dashed' : 'solid'} ${props => props.fcolor};
+    color: ${props => props.activeTags.includes(props.name) ? 'white' : props.fcolor};
+    border: 2px ${props => props.activeTags.includes(props.name) ? 'dashed' : 'solid'} ${props => props.fcolor};
     width: fit-content;
     padding: 2px 5px;
     margin: 2px;
@@ -42,13 +42,20 @@ const TagContainer = styled.div`
 
 const SearchPanel = () => {
 
-    const pokeCount = useSelector(state => state.response.count || state.response.count)|| 0;
+    const pokeCount = useSelector(state => state.response.count) || 0;
     const pokeTypes = useSelector(state => state.pokeTypes);
+    const activeTags = useSelector(state => state.activeTags);
+
     const dispatch = useDispatch();
     const [count, setCount] = useState("10");
+
     useEffect(() => {
         dispatch(getData(count));
     }, [count]);
+
+    useEffect(() => {
+        activeTags.forEach((item) => dispatch(getPokesByTag(item, count)))
+    }, [activeTags])
 
     return (
         <Wrapper>
@@ -60,8 +67,7 @@ const SearchPanel = () => {
                 pokes on the page
                 <select onChange={(e) => {
                     setCount(e.target.value)
-                }
-                }>
+                }}>
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
@@ -75,9 +81,9 @@ const SearchPanel = () => {
                             key={index}
                             bgcolor={item.bgcolor}
                             fcolor={item.fcolor}
-                            onClick={() => dispatch(getPokesByTag(item.type, !item.isActive))}
-                            isActive={item.isActive}
-                        >
+                            onClick={() => dispatch(tagSelection(item.type))}
+                            name={item.type}
+                            activeTags={activeTags}                        >
                             {item.type}
                         </Tag>
                     )
