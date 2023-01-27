@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import SearchPanel from './components/SearchPanel';
 import CardContainer from './components/CardContainer';
 import { useSelector } from 'react-redux';
+import Modal from './components/Modal';
 import noWay from './img/no-way.gif';
 
 const NoWayEmptyPage = styled.div`
@@ -36,6 +37,7 @@ function App() {
         :
         <NoWayEmptyPage />
       }
+      <Modal />
     </div>
   );
 }
