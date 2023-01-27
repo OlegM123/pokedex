@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { updateModal } from "../redux-store/actions";
+import { getPokeDesc, updateModal } from "../redux-store/actions";
 
 const Modal = () => {
 
     const modalData = useSelector(state => state.modalData);
     const dispatch = useDispatch();
+
     const closeModal = () => {
         dispatch(updateModal({ pokeName: '', types: [], pokeDesc: '', isOpen: false }))
     }
+    useEffect(() => {
+        !!modalData.pokeName.length && dispatch(getPokeDesc(modalData.pokeName))
+    }, [modalData.pokeName]);
 
     return (
         <ModalWindow isOpen={modalData.isOpen}>

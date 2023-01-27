@@ -115,10 +115,10 @@ export const tagSelection = (name) => {
     }
 }
 
-export const updateModal = (isOpen, pokeName, types, description) => {
+export const updateModal = (payload) => {
     return {
         type: UPDATE_MODAL,
-        payload: {...isOpen, pokeName, types, description},
+        payload,
     }
 }
 
@@ -137,6 +137,6 @@ export const getPokeDesc = (pokeName) => {
 const addPokeDesc = (payload) => {
     return {
         type: GET_POKE_DESC,
-        payload: payload.flavour_text_entires[0].flavour_text,
+        payload: payload.flavor_text_entries[0].flavor_text.replace('', ''),
     }
 }

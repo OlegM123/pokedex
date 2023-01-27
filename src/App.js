@@ -1,5 +1,5 @@
 import StyledPokeCard from './components/Card';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 
 import styled from 'styled-components';
@@ -19,6 +19,7 @@ const NoWayEmptyPage = styled.div`
 function App() {
 
   const pokeList = useSelector(state => state.response || state.response.pokemon) || [];
+  
   return (
     <div className="App">
       <SearchPanel />

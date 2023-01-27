@@ -17,7 +17,6 @@ const defaultState = {
 }
 
 export const reducer = (state = defaultState, action) => {
-    console.log(state.modalData)
     switch (action.type) {
         case GET_DATA:
             return { ...state, response: [...action.payload, ...state.response] };
