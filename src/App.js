@@ -1,11 +1,12 @@
 import StyledPokeCard from './components/Card';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 
 import styled from 'styled-components';
 import SearchPanel from './components/SearchPanel';
 import CardContainer from './components/CardContainer';
 import { useSelector } from 'react-redux';
+import Modal from './components/Modal';
 import noWay from './img/no-way.gif';
 
 const NoWayEmptyPage = styled.div`
@@ -18,6 +19,7 @@ const NoWayEmptyPage = styled.div`
 function App() {
 
   const pokeList = useSelector(state => state.response || state.response.pokemon) || [];
+  
   return (
     <div className="App">
       <SearchPanel />
@@ -36,6 +38,7 @@ function App() {
         :
         <NoWayEmptyPage />
       }
+      <Modal />
     </div>
   );
 }

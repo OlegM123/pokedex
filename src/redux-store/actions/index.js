@@ -1,3 +1,5 @@
+import { GET_POKE_DESC, UPDATE_MODAL } from "../types";
+
 export const getData = (count) => {
     return dispatch => {
         dispatch(loadingStarted())
@@ -95,7 +97,7 @@ export const getPokesByTag = (name, count) => {
         dispatch(loadingStarted());
         fetch(!!name ? `https://pokeapi.co/api/v2/type/${name}` : `https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${count}`)
             .then(response => {
-                return response.json()
+                return response.json();
             })
             .then(data => {
                 dispatch(addDataToStore(data.pokemon));
@@ -110,5 +112,31 @@ export const tagSelection = (name) => {
     return {
         type: 'TAG_SELECTION',
         name: name,
+    }
+}
+
+export const updateModal = (payload) => {
+    return {
+        type: UPDATE_MODAL,
+        payload,
+    }
+}
+
+export const getPokeDesc = (pokeName) => {
+    return dispatch => {
+        fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokeName}`)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            dispatch(addPokeDesc(data));
+        })
+    }
+}
+
+const addPokeDesc = (payload) => {
+    return {
+        type: GET_POKE_DESC,
+        payload: payload.flavor_text_entries[0].flavor_text.replace('', ''),
     }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getPokeData } from "../redux-store/actions";
+import { getPokeData, updateModal } from "../redux-store/actions";
 import placeholder from '../img/pokemon-pikachu.gif';
 import loader from '../img/loader.gif';
 
@@ -39,16 +39,16 @@ const PokeStats = styled.div`
 
 const StyledPokeCard = ({ name, url }) => {
 
-    const dispacth = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispacth(getPokeData(url));
+        dispatch(getPokeData(url));
     }, [])
 
     const pokeInfo = useSelector(state => state.pokeData.filter(item => item.name === name))[0];
     const tags = pokeInfo && pokeInfo.types.map(item => { return item.type.name }).join(' ')
     return (
-        <StyledDiv>
+        <StyledDiv onClick={() => dispatch(updateModal({pokeName: `${pokeInfo.name}`, types: tags, pokeDesc: 'description', avatar: pokeInfo.sprites.front_default, isOpen: true}))}>
             <PokeImg url={pokeInfo && pokeInfo.sprites.front_default} />
             <PokeStats>
                 Name: {(name[0].toUpperCase() + name.slice(1))}
