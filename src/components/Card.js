@@ -18,6 +18,7 @@ const StyledDiv = styled.div`
     margin-bottom: 10px;
     display: flex;
     cursor: pointer;
+    background-color: #fff;
     &:hover {
         background-color: #e0fce0;
     }
@@ -45,20 +46,45 @@ const StyledPokeCard = ({ name, url }) => {
         dispatch(getPokeData(url));
     }, [])
 
+    const pokeTypes = useSelector(state => state.pokeTypes);
     const pokeInfo = useSelector(state => state.pokeData.filter(item => item.name === name))[0];
-    const tags = pokeInfo && pokeInfo.types.map(item => { return item.type.name }).join(' ')
+    const tags = pokeInfo && pokeInfo.types.map(item => { return item.type.name })
     return (
-        <StyledDiv onClick={() => dispatch(updateModal({pokeName: `${pokeInfo.name}`, types: tags, pokeDesc: 'description', avatar: pokeInfo.sprites.front_default, isOpen: true}))}>
+        <StyledDiv onClick={() => dispatch(updateModal({ pokeName: `${pokeInfo.name}`, types: tags, pokeDesc: '', avatar: pokeInfo.sprites.front_default, isOpen: true }))}>
             <PokeImg url={pokeInfo && pokeInfo.sprites.front_default} />
             <PokeStats>
-                Name: {(name[0].toUpperCase() + name.slice(1))}
-                <br />
-                Type: {tags || 'Loading...'}
+                {(name[0].toUpperCase() + name.slice(1))}
+                <TagContainer>
+                    {tags ? tags.map((item) => {
+                        return (
+                            <Tag
+                                bgcolor={pokeTypes.filter((elem) => elem.type === item)[0].bgcolor}
+                                fcolor={pokeTypes.filter((elem) => elem.type === item)[0].fcolor}>
+                                {item}
+                            </Tag>
+                        )
+
+                    }) : 'Loading...'}
+                </TagContainer>
             </PokeStats>
         </StyledDiv>
     )
 }
 
+const Tag = styled.div`
+    background-color: ${props => props.bgcolor};
+    color: ${props => props.fcolor};
+    border: 2px solid ${props => props.fcolor};
+    width: fit-content;
+    padding: 2px 5px;
+    margin: 2px;
+    border-radius: 15px;
+    cursor: pointer;
+    text-transform: capitalize;
+`
 
+const TagContainer = styled.div`
+    display: flex;
+`
 
 export default StyledPokeCard;

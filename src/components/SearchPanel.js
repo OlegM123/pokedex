@@ -5,68 +5,8 @@ import { getData, getPokesByTag, tagSelection, handleSearch } from "../redux-sto
 import { FcSearch } from 'react-icons/fc';
 import pokedex from "../img/pokedex logo.png";
 
-
-const StyledDiv = styled.div`
-height: 25px;
-padding: 10px;
-display: flex;
-justify-content: space-between;
-max-width: 700px;
-margin: 0 auto;
-`
-const PaginationSelector = styled(StyledDiv)`
-justify-content: flex-end;
-`
-const Border = styled.div`
-border-bottom: 2px solid #e0e0e0;
-width: 100%;
-`
-const SearchButton = styled.button`
-    height: 30px;
-    width: 30px;
-    cursor: pointer;
-    border-radius: 50%;
-    border-style: solid;
-    margin-left: 10px;
-`
-
-const Wrapper = styled.div`
-position: fixed;
-background-color: white;
-width: 100vw;
-top: 0;
-`
-const Tag = styled.div`
-    background-color: ${props => props.bgcolor};
-    color: ${props => props.activeTags.includes(props.name) ? 'white' : props.fcolor};
-    border: 2px ${props => props.activeTags.includes(props.name) ? 'dashed' : 'solid'} ${props => props.fcolor};
-    width: fit-content;
-    padding: 2px 5px;
-    margin: 2px;
-    border-radius: 15px;
-    cursor: pointer;
-`
-const TagContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-`
-
-const StyledSelect = styled.select`
-    margin-left: 5px;
-`
-
-const PokedexLogo = styled.div`
-    background-image: url('${pokedex}');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    width: 200px;
-    height: 70px;
-`
-
 const SearchPanel = () => {
 
-    const pokeCount = useSelector(state => state.response.count) || 0;
     const pokeTypes = useSelector(state => state.pokeTypes);
     const activeTags = useSelector(state => state.activeTags);
     const [searchText, setSearchText] = useState('');
@@ -127,5 +67,67 @@ const SearchPanel = () => {
         </Wrapper>
     )
 }
+
+
+const StyledDiv = styled.div`
+height: 25px;
+padding: 10px;
+display: flex;
+justify-content: space-between;
+max-width: 700px;
+margin: 0 auto;
+`
+const PaginationSelector = styled(StyledDiv)`
+justify-content: flex-end;
+`
+const Border = styled.div`
+border-bottom: 2px solid #e0e0e0;
+width: 100%;
+`
+const SearchButton = styled.button`
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    border-style: solid;
+    margin-left: 10px;
+`
+
+const Wrapper = styled.div`
+position: fixed;
+background-color: white;
+width: 100vw;
+top: 0;
+`
+const Tag = styled.div`
+    background-color: ${props => props.bgcolor};
+    color: ${props => props.activeTags.includes(props.name) ? 'white' : props.fcolor};
+    border: 2px ${props => props.activeTags.includes(props.name) ? 'dashed' : 'solid'} ${props => props.fcolor};
+    width: fit-content;
+    padding: 2px 5px;
+    margin: 2px;
+    border-radius: 15px;
+    cursor: pointer;
+    text-transform: capitalize;
+`
+const TagContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+`
+
+const StyledSelect = styled.select`
+    margin-left: 5px;
+`
+
+const PokedexLogo = styled.div`
+    background-image: url('${pokedex}');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 70px;
+`
 
 export default SearchPanel;
