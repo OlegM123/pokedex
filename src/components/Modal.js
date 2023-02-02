@@ -15,10 +15,9 @@ const Modal = () => {
     const pokeTypes = useSelector(state => state.pokeTypes);
     const pokeInfo = useSelector(state => state.pokeData.filter(item => item.name === modalData.name))[0];
     const tags = modalData.types;
-    
+
     useEffect(() => {
         !!modalData.pokeName.length && dispatch(getPokeDesc(modalData.pokeName));
-        console.log(pokeInfo)
     }, [modalData.pokeName]);
 
     return (
@@ -30,17 +29,18 @@ const Modal = () => {
                 <Name>{modalData.pokeName || 'name'}</Name>
                 <Border />
                 <TagContainer>
-                    {tags ? tags.map((item) => {
-                    return (
-                        <Tag
-                            bgcolor={pokeTypes.filter((elem) => elem.type === item)[0].bgcolor}
-                            fcolor={pokeTypes.filter((elem) => elem.type === item)[0].fcolor}>
-                            {item}
-                        </Tag>
-                    )
+                    {tags ? tags.map((item, index) => {
+                        return (
+                            <Tag
+                                key={index}
+                                bgcolor={pokeTypes.filter((elem) => elem.type === item)[0].bgcolor}
+                                fcolor={pokeTypes.filter((elem) => elem.type === item)[0].fcolor}>
+                                {item}
+                            </Tag>
+                        )
 
-                }) : 'Loading...'}
-                </TagContainer>                
+                    }) : 'Loading...'}
+                </TagContainer>
                 <Border />
                 <div>{modalData.pokeDesc}</div>
             </DataContainer>

@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getData, getPokesByTag, tagSelection, handleSearch } from "../redux-store/actions";
+import { getData, getPokesByTag, tagSelection, handleSearch, updatePaginationData } from "../redux-store/actions";
 import { FcSearch } from 'react-icons/fc';
 import pokedex from "../img/pokedex logo.png";
 
-const SearchPanel = () => {
+const SearchPanel = ({ countOfPokemons }) => {
 
     const pokeTypes = useSelector(state => state.pokeTypes);
     const activeTags = useSelector(state => state.activeTags);
     const [searchText, setSearchText] = useState('');
     const dispatch = useDispatch();
-    const [count, setCount] = useState("10");
+    const [limit, setLimit] = useState(10);
+    const [offset, setOffset] = useState(0);
 
     useEffect(() => {
-        dispatch(getData(count));
-    }, [count]);
+        dispatch(getData());
+    }, [])
 
     useEffect(() => {
-        activeTags.forEach((item) => dispatch(getPokesByTag(item, count)))
+        dispatch(updatePaginationData(offset, limit));
+    }, [limit, offset]);
+
+    useEffect(() => {
+        activeTags.length ?
+            activeTags.forEach((item) => dispatch(getPokesByTag(item))) :
+            !searchText.length && dispatch(getData());
     }, [activeTags])
 
     return (
@@ -34,16 +41,28 @@ const SearchPanel = () => {
                         <FcSearch />
                     </SearchButton>
                 </div>
-
             </StyledDiv>
             <PaginationSelector>
+                <NavButton
+                    onClick={() => setOffset(offset - limit)}
+                    disabled={offset - limit < 0}
+                >
+                    Previous
+                </NavButton>
+                <NavButton
+                    onClick={() => setOffset(offset + limit)}
+                    disabled={offset + limit > countOfPokemons}
+                >
+                    Next
+                </NavButton>
                 pokes on the page
                 <StyledSelect onChange={(e) => {
-                    setCount(e.target.value)
+                    setLimit(Number(e.target.value))
+                    setOffset(0);
                 }}>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
+                    <option value={10}>{10}</option>
+                    <option value={20}>{20}</option>
+                    <option value={50}>{50}</option>
                 </StyledSelect>
             </PaginationSelector>
             <Border />
@@ -54,7 +73,12 @@ const SearchPanel = () => {
                             key={index}
                             bgcolor={item.bgcolor}
                             fcolor={item.fcolor}
-                            onClick={() => dispatch(tagSelection(item.type))}
+                            onClick={
+                                () => {
+                                    dispatch(tagSelection(item.type));
+                                    setOffset(0);
+                                }
+                            }
                             name={item.type}
                             activeTags={activeTags}
                         >
@@ -68,36 +92,49 @@ const SearchPanel = () => {
     )
 }
 
+const NavButton = styled.button`
+    border-radius: 3px;
+    height: 25px;
+    margin: 0 5px;
+    border: 1px solid rgb(133, 133, 133);
+    cursor: pointer;
+    &:hover {
+        background-color: #e0fce0;
+    }
+`
 
 const StyledDiv = styled.div`
-height: 25px;
-padding: 10px;
-display: flex;
-justify-content: space-between;
-max-width: 700px;
-margin: 0 auto;
+    height: 25px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 700px;
+    margin: 0 auto;
 `
 const PaginationSelector = styled(StyledDiv)`
-justify-content: flex-end;
+    justify-content: flex-end;
 `
 const Border = styled.div`
-border-bottom: 2px solid #e0e0e0;
-width: 100%;
+    border-bottom: 2px solid #e0e0e0;
+    width: 100%;
 `
 const SearchButton = styled.button`
-    height: 30px;
+    height: 20px;
     width: 30px;
     cursor: pointer;
-    border-radius: 50%;
-    border-style: solid;
+    border-radius: 3px;
+    border: 1px solid rgb(133, 133, 133);
     margin-left: 10px;
+    &:hover {
+        background-color: #e0fce0;
+    }
 `
 
 const Wrapper = styled.div`
-position: fixed;
-background-color: white;
-width: 100vw;
-top: 0;
+    position: fixed;
+    background-color: white;
+    width: 100vw;
+    top: 0;
 `
 const Tag = styled.div`
     background-color: ${props => props.bgcolor};
@@ -120,6 +157,9 @@ const TagContainer = styled.div`
 
 const StyledSelect = styled.select`
     margin-left: 5px;
+    border-radius: 3px;
+    width: 40px;
+    cursor: pointer;
 `
 
 const PokedexLogo = styled.div`

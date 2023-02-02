@@ -1,9 +1,9 @@
-import { GET_POKE_DESC, UPDATE_MODAL } from "../types";
+import { GET_POKE_DESC, UPDATE_MODAL, UPDATE_PAGINATION_DATA, SEARCH_COMPLETED } from "../types";
 
 export const getData = (count) => {
     return dispatch => {
         dispatch(loadingStarted())
-        fetch(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${count}`)
+        fetch(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1500`)
             .then(response => {
                 return response.json();
             })
@@ -75,14 +75,21 @@ const addPokeTypes = (payload) => {
 
 export const handleSearch = (text) => {
     return dispatch => {
-        dispatch(clearResults());        
+        dispatch(clearResults());
         fetch('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1500')
             .then(response => {
                 return response.json();
             })
-            .then(data => {        
-                dispatch(addDataToStore(data.results.filter(item => item.name.includes(text))));
+            .then(data => {
+                dispatch(addSearchResultToStore(data.results.filter(item => item.name.includes(text))));
             })
+    }
+}
+
+const addSearchResultToStore = (payload) => {
+    return {
+        type: SEARCH_COMPLETED,
+        payload,
     }
 }
 
@@ -125,18 +132,26 @@ export const updateModal = (payload) => {
 export const getPokeDesc = (pokeName) => {
     return dispatch => {
         fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokeName}`)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            dispatch(addPokeDesc(data));
-        })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                dispatch(addPokeDesc(data));
+            })
     }
 }
 
 const addPokeDesc = (payload) => {
     return {
         type: GET_POKE_DESC,
-        payload: payload.flavor_text_entries[0].flavor_text.replace('', ''),
+        payload: payload?.flavor_text_entries[0]?.flavor_text.replace('', ''),
+    }
+}
+
+export const updatePaginationData = (offset, limit) => {
+    return {
+        type: UPDATE_PAGINATION_DATA,
+        offset,
+        limit,
     }
 }

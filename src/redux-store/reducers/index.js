@@ -1,4 +1,4 @@
-import { GET_DATA, LOADING_END, LOADING_START, GET_POKE_DATA, GET_POKE_TYPES, TAG_SELECTION, CLEAR_STORE, UPDATE_MODAL, GET_POKE_DESC } from "../types";
+import { GET_DATA, LOADING_END, LOADING_START, GET_POKE_DATA, GET_POKE_TYPES, TAG_SELECTION, CLEAR_STORE, UPDATE_MODAL, GET_POKE_DESC, UPDATE_PAGINATION_DATA, SEARCH_COMPLETED } from "../types";
 import pokeTypes from '../constants/pokeTypes.js';
 
 const defaultState = {
@@ -13,7 +13,11 @@ const defaultState = {
         types: [],
         pokeDesc: '',
         avatar: '',
-    }
+    },
+    paginationData: {
+        offset: 0,
+        limit: 10,
+    },
 }
 
 export const reducer = (state = defaultState, action) => {
@@ -36,6 +40,10 @@ export const reducer = (state = defaultState, action) => {
             return { ...state, modalData: action.payload };
         case GET_POKE_DESC:
             return { ...state, modalData: { ...state.modalData, pokeDesc: action.payload } };
+        case UPDATE_PAGINATION_DATA:
+            return { ...state, paginationData: {offset: action.offset, limit: action.limit}};
+        case SEARCH_COMPLETED:
+            return {...state, response: action.payload}
         default: return state;
     }
 }

@@ -1,5 +1,5 @@
 import StyledPokeCard from './components/Card';
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import './App.css';
 
 import styled from 'styled-components';
@@ -19,19 +19,27 @@ const NoWayEmptyPage = styled.div`
 function App() {
 
   const pokeList = useSelector(state => state.response || state.response.pokemon) || [];
-  
+  const actualContent = [];
+  const pagination = useSelector(state => state.paginationData);
+
+  useMemo(() => {
+    actualContent.length = 0;
+    for (let offset = pagination.offset; actualContent.length < pagination.limit && !!pokeList[offset]; offset++) {
+      pokeList[offset] && actualContent.push(pokeList[offset]);
+    }
+  }, [pokeList, pagination]);
+
   return (
     <div className="App">
-      <SearchPanel />
-      {pokeList.length > 0 ?
-        <CardContainer content={pokeList.map((item, index) => {
+      <SearchPanel countOfPokemons={pokeList.length} />
+      {actualContent.length > 0 ?
+        <CardContainer content={actualContent.map((item, index) => {
           return (
             <StyledPokeCard
               key={index}
               name={item.name || item.pokemon.name}
               url={item.url || item.pokemon.url}
             />
-
           )
         })}>
         </CardContainer>
