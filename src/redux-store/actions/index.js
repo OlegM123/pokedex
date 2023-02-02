@@ -144,7 +144,7 @@ export const getPokeDesc = (pokeName) => {
 const addPokeDesc = (payload) => {
     return {
         type: GET_POKE_DESC,
-        payload: payload?.flavor_text_entries[0]?.flavor_text.replace('', ''),
+        payload: payload?.flavor_text_entries[0]?.flavor_text.replace('', ' '),
     }
 }
 

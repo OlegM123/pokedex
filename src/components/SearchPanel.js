@@ -44,16 +44,42 @@ const SearchPanel = ({ countOfPokemons }) => {
             </StyledDiv>
             <PaginationSelector>
                 <NavButton
-                    onClick={() => setOffset(offset - limit)}
+                    onClick={() => {
+                        setOffset(0);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
                     disabled={offset - limit < 0}
                 >
-                    Previous
+                    {'<<'}
                 </NavButton>
                 <NavButton
-                    onClick={() => setOffset(offset + limit)}
+                    onClick={() => {
+                        setOffset(offset - limit);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    disabled={offset - limit < 0}
+                >
+                    {'<'}
+                </NavButton>
+                {`Page ${offset / limit + 1} of ${Math.ceil(countOfPokemons / limit)}`}
+                <NavButton
+                    onClick={() => {
+                        setOffset(offset + limit);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
                     disabled={offset + limit > countOfPokemons}
                 >
-                    Next
+                    {'>'}
+                </NavButton>
+                <NavButton
+                    onClick={() => {
+                        console.log(countOfPokemons - limit)
+                        setOffset(limit * (Math.ceil(countOfPokemons / limit) - 1));
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    disabled={offset + limit > countOfPokemons}
+                >
+                    {'>>'}
                 </NavButton>
                 pokes on the page
                 <StyledSelect onChange={(e) => {
