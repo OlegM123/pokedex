@@ -23,7 +23,7 @@ const defaultState = {
 export const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case GET_DATA:
-            return { ...state, response: [...action.payload.filter(item => !state.response.find(elem => elem.name = item.name)), ...state.response] };
+            return { ...state, response: [...action.payload.filter(item => !state.response.includes(item)), ...state.response] };
         case LOADING_START:
             return { ...state, isLoading: true, response: [] };
         case LOADING_END:

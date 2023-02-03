@@ -108,7 +108,6 @@ const SearchPanel = ({ countOfPokemons }) => {
                     )
                 })}
             </TagContainer>
-            {`Count of pokemons ${countOfPokemons}`}
             <Border />
         </Wrapper>
     )

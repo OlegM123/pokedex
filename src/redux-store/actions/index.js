@@ -1,9 +1,11 @@
 import { GET_POKE_DESC, UPDATE_MODAL, UPDATE_PAGINATION_DATA, SEARCH_COMPLETED } from "../types";
 
+const defaultUrl = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=10000';
+
 export const getData = (count) => {
     return dispatch => {
         dispatch(loadingStarted())
-        fetch(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1500`)
+        fetch(defaultUrl)
             .then(response => {
                 return response.json();
             })
@@ -76,7 +78,7 @@ const addPokeTypes = (payload) => {
 export const handleSearch = (text) => {
     return dispatch => {
         dispatch(clearResults());
-        fetch('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1500')
+        fetch(defaultUrl)
             .then(response => {
                 return response.json();
             })
@@ -102,12 +104,13 @@ const clearResults = () => {
 export const getPokesByTag = (name, count) => {
     return dispatch => {
         dispatch(loadingStarted());
-        fetch(!!name ? `https://pokeapi.co/api/v2/type/${name}` : `https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${count}`)
+        fetch(!!name ? `https://pokeapi.co/api/v2/type/${name}` : defaultUrl)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                dispatch(addDataToStore(data.pokemon));
+                console.log('data: ', data.pokemon)
+                dispatch(addDataToStore([...data.pokemon.map((item) => { return item.pokemon})]));
             })
             .then(() => {
                 dispatch(loadingEnded());
