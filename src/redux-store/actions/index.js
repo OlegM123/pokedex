@@ -101,7 +101,7 @@ const clearResults = () => {
     }
 }
 
-export const getPokesByTag = (name, count) => {
+export const getPokesByTag = (name) => {
     return dispatch => {
         dispatch(loadingStarted());
         fetch(!!name ? `https://pokeapi.co/api/v2/type/${name}` : defaultUrl)
@@ -110,7 +110,7 @@ export const getPokesByTag = (name, count) => {
             })
             .then(data => {
                 console.log('data: ', data.pokemon)
-                dispatch(addDataToStore([...data.pokemon.map((item) => { return item.pokemon})]));
+                dispatch(addDataToStore([...data.pokemon.map((item) => { return item.pokemon })]));
             })
             .then(() => {
                 dispatch(loadingEnded());

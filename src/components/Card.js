@@ -52,7 +52,6 @@ const StyledDiv = styled.div`
     border-radius: 5px;
     padding: 10px;
     text-align: center;
-    margin-bottom: 10px;
     display: flex;
     cursor: pointer;
     background-color: #fff;
