@@ -4,10 +4,11 @@ import styled from "styled-components";
 const StyledDiv = styled.div`
     display: grid;
     place-items: center;
-    gap: 20px;
+    gap: 5px;
     grid-template-columns: repeat(2, 1fr);
     max-width: 700px;
     margin: 0 auto;
+    padding-top: 10px;
 `
 
 const CardContainer = ({ content }) => {

@@ -15,10 +15,6 @@ const SearchPanel = ({ countOfPokemons }) => {
     const [offset, setOffset] = useState(0);
 
     useEffect(() => {
-        dispatch(getData());
-    }, [])
-
-    useEffect(() => {
         dispatch(updatePaginationData(offset, limit));
     }, [limit, offset]);
 
@@ -33,11 +29,14 @@ const SearchPanel = ({ countOfPokemons }) => {
             <StyledDiv>
                 <PokedexLogo />
                 <div>
-                    <input type={"text"}
-                        placeholder="search! but it takes some time"
+                    <StyledInput type={"text"}
+                        placeholder="enter pokemon name..."
                         onChange={(e) => setSearchText(e.target.value)}
                     />
-                    <SearchButton onClick={() => { searchText.length && dispatch(handleSearch(searchText)) }}>
+                    <SearchButton onClick={() => {
+                        searchText.length && dispatch(handleSearch(searchText));
+                        setOffset(0);
+                    }}>
                         <FcSearch />
                     </SearchButton>
                 </div>
@@ -46,7 +45,6 @@ const SearchPanel = ({ countOfPokemons }) => {
                 <NavButton
                     onClick={() => {
                         setOffset(0);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     disabled={offset - limit < 0}
                 >
@@ -55,7 +53,6 @@ const SearchPanel = ({ countOfPokemons }) => {
                 <NavButton
                     onClick={() => {
                         setOffset(offset - limit);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     disabled={offset - limit < 0}
                 >
@@ -65,7 +62,6 @@ const SearchPanel = ({ countOfPokemons }) => {
                 <NavButton
                     onClick={() => {
                         setOffset(offset + limit);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     disabled={offset + limit > countOfPokemons}
                 >
@@ -73,9 +69,7 @@ const SearchPanel = ({ countOfPokemons }) => {
                 </NavButton>
                 <NavButton
                     onClick={() => {
-                        console.log(countOfPokemons - limit)
                         setOffset(limit * (Math.ceil(countOfPokemons / limit) - 1));
-                        window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     disabled={offset + limit > countOfPokemons}
                 >
@@ -118,20 +112,37 @@ const SearchPanel = ({ countOfPokemons }) => {
     )
 }
 
+const StyledInput = styled.input`
+    border: 1px solid #356ABC;
+    height: 25px;
+    border-radius: 3px;
+    outline: none;
+`;
+
 const NavButton = styled.button`
+    background-color: #fff;
     border-radius: 3px;
     height: 25px;
     margin: 0 5px;
-    border: 1px solid rgb(133, 133, 133);
+    border: 1px solid #356ABC;
+    color: #356ABC;
     cursor: pointer;
-    &:hover {
-        background-color: #e0fce0;
+    &:hover:enabled {
+        background-color: #BDF4FF;
     }
+    &:active:enabled {
+        background-color: #02D4FF
+    }
+    &:disabled {
+        background-color: #e0e0e0;
+        color: #999;
+        cursor: default;
+    }    
 `
 
 const StyledDiv = styled.div`
     height: 25px;
-    padding: 10px;
+    padding: 10px 0;
     display: flex;
     justify-content: space-between;
     max-width: 700px;
@@ -149,10 +160,13 @@ const SearchButton = styled.button`
     width: 30px;
     cursor: pointer;
     border-radius: 3px;
-    border: 1px solid rgb(133, 133, 133);
+    border: 1px solid #356ABC;
     margin-left: 10px;
     &:hover {
-        background-color: #e0fce0;
+        background-color: #BDF4FF;
+    }
+    &:active {
+        background-color: #02D4FF
     }
 `
 
@@ -186,6 +200,11 @@ const StyledSelect = styled.select`
     border-radius: 3px;
     width: 40px;
     cursor: pointer;
+    border: 1px solid #356ABC;
+    outline: none;
+    &:hover {
+        background-color: #BDF4FF;
+    }
 `
 
 const PokedexLogo = styled.div`

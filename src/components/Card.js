@@ -62,14 +62,15 @@ const StyledDiv = styled.div`
     border: 1px solid #e0e0e0;
     border-radius: 5px;
     padding: 10px;
-    box-shadow: 0px 0px 10px #ededed;
     text-align: center;
     margin-bottom: 10px;
     display: flex;
     cursor: pointer;
     background-color: #fff;
     &:hover {
-        background-color: #e0fce0;
+        background-color: #BDF4FF;
+        border-color: #02D4FF;
+        box-shadow: 0px 0px 10px #356ABC;
     }
 `
 const PokeImg = styled.div`

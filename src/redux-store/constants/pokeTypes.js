@@ -17,8 +17,6 @@ const pokeTypes = [
     { type: 'rock', bgcolor: '#601D0C', fcolor: '#8B3E21' },
     { type: 'steel', bgcolor: '#5E766D', fcolor: '#42BD94' },
     { type: 'water', bgcolor: '#1751E2', fcolor: '#86A8FC' },
-    { type: 'unknown', bgcolor: '#a5a5a5', fcolor: '#000000' },
-    { type: 'shadow', bgcolor: '#000000', fcolor: '#fc56ff' },
 ];
 
 export default pokeTypes;
