@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { getData, getPokesByTag, tagSelection, handleSearch, updatePaginationData } from "../redux-store/actions";
 import { FcSearch } from 'react-icons/fc';
 import pokedex from "../img/pokedex logo.png";
+import Tag from "./Tag";
 
 const SearchPanel = ({ countOfPokemons }) => {
 
@@ -92,21 +93,22 @@ const SearchPanel = ({ countOfPokemons }) => {
                         <Tag
                             key={index}
                             bgcolor={item.bgcolor}
-                            fcolor={item.fcolor}
+                            fcolor={activeTags.includes(item.type) ? 'white' : item.fcolor}
+                            bcolor={item.fcolor}
+                            active={!!activeTags.includes(item.type)}
                             onClick={
                                 () => {
                                     dispatch(tagSelection(item.type));
                                     setOffset(0);
                                 }
                             }
-                            name={item.type}
-                            activeTags={activeTags}
                         >
                             {item.type}
                         </Tag>
                     )
                 })}
             </TagContainer>
+            {`Count of pokemons ${countOfPokemons}`}
             <Border />
         </Wrapper>
     )
@@ -176,17 +178,7 @@ const Wrapper = styled.div`
     width: 100vw;
     top: 0;
 `
-const Tag = styled.div`
-    background-color: ${props => props.bgcolor};
-    color: ${props => props.activeTags.includes(props.name) ? 'white' : props.fcolor};
-    border: 2px ${props => props.activeTags.includes(props.name) ? 'dashed' : 'solid'} ${props => props.fcolor};
-    width: fit-content;
-    padding: 2px 5px;
-    margin: 2px;
-    border-radius: 15px;
-    cursor: pointer;
-    text-transform: capitalize;
-`
+
 const TagContainer = styled.div`
     display: flex;
     flex-wrap: wrap;

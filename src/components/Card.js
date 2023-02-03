@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { getPokeData, updateModal } from "../redux-store/actions";
 import placeholder from '../img/pokemon-pikachu.gif';
 import loader from '../img/loader.gif';
+import Tag from "./Tag";
 
 const StyledPokeCard = ({ name, url }) => {
 
@@ -37,18 +38,6 @@ const StyledPokeCard = ({ name, url }) => {
         </StyledDiv>
     )
 }
-
-const Tag = styled.div`
-    background-color: ${props => props.bgcolor};
-    color: ${props => props.fcolor};
-    border: 2px solid ${props => props.fcolor};
-    width: fit-content;
-    padding: 2px 5px;
-    margin: 2px;
-    border-radius: 15px;
-    cursor: pointer;
-    text-transform: capitalize;
-`
 
 const TagContainer = styled.div`
     display: flex;

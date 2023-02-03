@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getPokeDesc, updateModal } from "../redux-store/actions";
 import placeholder from "../img/pokemon-pikachu.gif"
-
+import Tag from "./Tag";
 const Modal = () => {
 
     const modalData = useSelector(state => state.modalData);
@@ -117,16 +117,16 @@ const Avatar = styled.div`
     background-repeat: no-repeat;
     background-size: cover;
 `
-const Tag = styled.div`
-    background-color: ${props => props.bgcolor};
-    color: ${props => props.fcolor};
-    border: 2px solid ${props => props.fcolor};
-    width: fit-content;
-    padding: 2px 5px;
-    margin: 2px;
-    border-radius: 15px;
-    cursor: pointer;
-    text-transform: capitalize;
-`
+// const Tag = styled.div`
+//     background-color: ${props => props.bgcolor};
+//     color: ${props => props.fcolor};
+//     border: 2px solid ${props => props.fcolor};
+//     width: fit-content;
+//     padding: 2px 5px;
+//     margin: 2px;
+//     border-radius: 15px;
+//     cursor: pointer;
+//     text-transform: capitalize;
+// `
 
 export default Modal;
