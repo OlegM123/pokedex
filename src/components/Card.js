@@ -45,12 +45,10 @@ const TagContainer = styled.div`
 `
 const StyledDiv = styled.div`
     font-size: 15px;
-    width: 90%;
-    max-height: 184px;
+    width: 100%;
     margin: 0 auto;
     border: 1px solid #e0e0e0;
     border-radius: 5px;
-    padding: 10px;
     text-align: center;
     display: flex;
     cursor: pointer;
@@ -66,9 +64,10 @@ const PokeImg = styled.div`
     background-color: white;
     background-position: center;
     background-size: contain;
+    border-radius: 5px;
     width: 96px;
     height: 96px;
-    box-shadow: 0px 0px 10px #ededed;
+    /* box-shadow: 0px 0px 10px #ededed; */
     background-repeat: no-repeat;
 `
 

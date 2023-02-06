@@ -109,7 +109,6 @@ export const getPokesByTag = (name) => {
                 return response.json();
             })
             .then(data => {
-                console.log('data: ', data.pokemon)
                 dispatch(addDataToStore([...data.pokemon.map((item) => { return item.pokemon })]));
             })
             .then(() => {

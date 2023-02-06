@@ -14,6 +14,7 @@ const SearchPanel = ({ countOfPokemons }) => {
     const dispatch = useDispatch();
     const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
+    const [isTagsVisible, setIsTagsVisible] = useState(true);
 
     useEffect(() => {
         dispatch(updatePaginationData(offset, limit));
@@ -29,66 +30,69 @@ const SearchPanel = ({ countOfPokemons }) => {
         <Wrapper>
             <StyledDiv>
                 <PokedexLogo />
-                <PaginationSelector>
-                    <NavButton
-                        onClick={() => {
+                <div>
+                    <Container>
+                        <StyledInput type={"text"}
+                            placeholder="enter pokemon name..."
+                            onChange={(e) => setSearchText(e.target.value)}
+                        />
+                        <SearchButton onClick={() => {
+                            searchText.length && dispatch(handleSearch(searchText));
                             setOffset(0);
-                        }}
-                        disabled={offset - limit < 0}
-                    >
-                        {'<<'}
-                    </NavButton>
-                    <NavButton
-                        onClick={() => {
-                            setOffset(offset - limit);
-                        }}
-                        disabled={offset - limit < 0}
-                    >
-                        {'<'}
-                    </NavButton>
-                    {`Page ${offset / limit + 1} of ${Math.ceil(countOfPokemons / limit)}`}
-                    <NavButton
-                        onClick={() => {
-                            setOffset(offset + limit);
-                        }}
-                        disabled={offset + limit > countOfPokemons}
-                    >
-                        {'>'}
-                    </NavButton>
-                    <NavButton
-                        onClick={() => {
-                            setOffset(limit * (Math.ceil(countOfPokemons / limit) - 1));
-                        }}
-                        disabled={offset + limit > countOfPokemons}
-                    >
-                        {'>>'}
-                    </NavButton>
-                    pokes on the page
-                    <StyledSelect onChange={(e) => {
-                        setLimit(Number(e.target.value))
-                        setOffset(0);
-                    }}>
-                        <option value={10}>{10}</option>
-                        <option value={20}>{20}</option>
-                        <option value={50}>{50}</option>
-                    </StyledSelect>
-                </PaginationSelector>
-                <PaginationSelector>
-                    <StyledInput type={"text"}
-                        placeholder="enter pokemon name..."
-                        onChange={(e) => setSearchText(e.target.value)}
-                    />
-                    <SearchButton onClick={() => {
-                        searchText.length && dispatch(handleSearch(searchText));
-                        setOffset(0);
-                    }}>
-                        <FcSearch />
-                    </SearchButton>
-                </PaginationSelector>
+                        }}>
+                            <FcSearch />
+                        </SearchButton>
+                    </Container>
+                    <Container>
+                        <NavButton
+                            onClick={() => {
+                                setOffset(0);
+                            }}
+                            disabled={offset - limit < 0}
+                        >
+                            {'<<'}
+                        </NavButton>
+                        <NavButton
+                            onClick={() => {
+                                setOffset(offset - limit);
+                            }}
+                            disabled={offset - limit < 0}
+                        >
+                            {'<'}
+                        </NavButton>
+                        {`${offset / limit + 1} of ${Math.ceil(countOfPokemons / limit)}`}
+                        <NavButton
+                            onClick={() => {
+                                setOffset(offset + limit);
+                            }}
+                            disabled={offset + limit > countOfPokemons}
+                        >
+                            {'>'}
+                        </NavButton>
+                        <NavButton
+                            onClick={() => {
+                                setOffset(limit * (Math.ceil(countOfPokemons / limit) - 1));
+                            }}
+                            disabled={offset + limit > countOfPokemons}
+                        >
+                            {'>>'}
+                        </NavButton>
+                        show by
+                        <StyledSelect onChange={(e) => {
+                            setLimit(Number(e.target.value))
+                            setOffset(0);
+                        }}>
+                            <option value={10}>{10}</option>
+                            <option value={20}>{20}</option>
+                            <option value={50}>{50}</option>
+                        </StyledSelect>
+                    </Container>
+                </div>
             </StyledDiv>
             <Border />
+            <HideTags onClick={() => setIsTagsVisible(!isTagsVisible)} />
             <TagContainer>
-                {pokeTypes.map((item, index) => {
+                {isTagsVisible && pokeTypes.map((item, index) => {
                     return (
                         <Tag
                             key={index}
@@ -113,14 +117,30 @@ const SearchPanel = ({ countOfPokemons }) => {
     )
 }
 
+const HideTags = styled.button`
+    background-image: url(../img/arrow-up.svg);
+    width: 100%;
+    max-width: 700px;
+    height: 15px;
+    background-color: white;
+    border: none;
+    border-radius: 3px;
+    &:hover{
+        background-color: #BDF4FF;
+    }
+    cursor: pointer;
+    @media (min-width: 549px) {
+        display: none;
+    }
+`
+
 const StyledInput = styled.input`
     border: 1px solid #356ABC;
     border-radius: 3px;
     outline: none;
     height: 22px;
     margin-left: 10px;
-`;
-
+`
 const NavButton = styled.button`
     background-color: #fff;
     border-radius: 3px;
@@ -141,29 +161,28 @@ const NavButton = styled.button`
         cursor: default;
     }    
 `
-
 const StyledDiv = styled.div`
-    padding: 10px 0;
+    padding: 3px 0;
     display: flex;
     justify-content: space-between;
     max-width: 700px;
     margin: 0 auto;
-    @media (max-width: 600px) {
-        justify-content: left;
-    }
-    @media (max-width: 650px) {
-        flex-direction: column ;
-    }
+    @media (max-width: 500px) {
+        justify-content: flex-end;
+        padding-right: 3px;
+    }   
 `
-const PaginationSelector = styled(StyledDiv)`
+const Container = styled(StyledDiv)`
     justify-content: flex-end;
     align-items: center;
     height: 25px;
     flex-direction: row;
 `
 const Border = styled.div`
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom: 1px solid #356ABC;
     width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
 `
 const SearchButton = styled.button`
     height: 25px;
@@ -179,14 +198,12 @@ const SearchButton = styled.button`
         background-color: #02D4FF
     }
 `
-
 const Wrapper = styled.div`
     position: fixed;
     background-color: white;
     width: 100vw;
     top: 0;
 `
-
 const TagContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -194,7 +211,6 @@ const TagContainer = styled.div`
     max-width: 700px;
     margin: 0 auto;
 `
-
 const StyledSelect = styled.select`
     margin-left: 5px;
     border-radius: 3px;
@@ -207,14 +223,12 @@ const StyledSelect = styled.select`
         background-color: #BDF4FF;
     }
 `
-
 const PokedexLogo = styled.div`
     background-image: url('${pokedex}');
     background-size: 100%;
     background-repeat: no-repeat;
-    width: 200px;
-    height: 70px;
-    @media (max-width: 720px) {
+    width: 180px;
+    @media (max-width: 500px) {
         display: none;
     }
 `

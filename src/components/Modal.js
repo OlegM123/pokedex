@@ -93,10 +93,10 @@ const Close = styled.button`
 `
 
 const ModalWindow = styled.div`
-    max-width: 450px;
-    width: 300ex;
+    max-width: 400px;
+    width: 100%;    
     visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
-    height: 300px;
+    height: fit-content;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -117,16 +117,5 @@ const Avatar = styled.div`
     background-repeat: no-repeat;
     background-size: cover;
 `
-// const Tag = styled.div`
-//     background-color: ${props => props.bgcolor};
-//     color: ${props => props.fcolor};
-//     border: 2px solid ${props => props.fcolor};
-//     width: fit-content;
-//     padding: 2px 5px;
-//     margin: 2px;
-//     border-radius: 15px;
-//     cursor: pointer;
-//     text-transform: capitalize;
-// `
 
 export default Modal;
