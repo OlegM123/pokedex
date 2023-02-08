@@ -35,7 +35,8 @@ const SearchPanel = ({ countOfPokemons }) => {
                     <Container>
                         <StyledInput type={"text"}
                             placeholder="enter pokemon name..."
-                            onChange={(e) => setSearchText(e.target.value)}
+                            onChange={(e) => setSearchText((e.target.value).toLocaleLowerCase())}
+                            onKeyDown={e => e.key === "Enter" && dispatch(handleSearch(searchText))}
                         />
                         <SearchButton onClick={() => {
                             searchText.length && dispatch(handleSearch(searchText));
