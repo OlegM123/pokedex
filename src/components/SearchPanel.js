@@ -5,6 +5,7 @@ import { getData, getPokesByTag, tagSelection, handleSearch, updatePaginationDat
 import { FcSearch } from 'react-icons/fc';
 import pokedex from "../img/pokedex logo.png";
 import Tag from "./Tag";
+import arrow from "../img/arrow-up.svg";
 
 const SearchPanel = ({ countOfPokemons }) => {
 
@@ -90,7 +91,10 @@ const SearchPanel = ({ countOfPokemons }) => {
                 </div>
             </StyledDiv>
             <Border />
-            <HideTags onClick={() => setIsTagsVisible(!isTagsVisible)} />
+            <HideTags
+                onClick={() => setIsTagsVisible(!isTagsVisible)}
+                isTagsVisible={isTagsVisible}
+            />
             <TagContainer>
                 {isTagsVisible && pokeTypes.map((item, index) => {
                     return (
@@ -118,13 +122,17 @@ const SearchPanel = ({ countOfPokemons }) => {
 }
 
 const HideTags = styled.button`
-    background-image: url(../img/arrow-up.svg);
+    background-image: url('${arrow}');
+    background-size: auto 20px;
+    background-repeat: no-repeat;
+    background-position: center;
     width: 100%;
     max-width: 700px;
-    height: 15px;
+    height: 20px;
     background-color: white;
     border: none;
     border-radius: 3px;
+    transform: ${props => props.isTagsVisible ? 'none' : 'rotate(180deg)'};
     &:hover{
         background-color: #BDF4FF;
     }
